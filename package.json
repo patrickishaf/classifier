@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "npx tsc",
-    "start": "node dist/src/index.js",
-    "migrate": "npx knex migrate:latest"
+    "start": "node dist/src/index.js"
   },
   "keywords": [],
   "author": "",

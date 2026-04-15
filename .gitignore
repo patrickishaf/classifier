@@ -45,5 +45,3 @@ base.*
 base_prod.*
 .logs/
 *.log
-db.sqlite
-*.sqlite
