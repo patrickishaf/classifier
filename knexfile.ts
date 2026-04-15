@@ -1,5 +1,5 @@
 const dbConfig = {
-  client: 'sqlite3',
+  client: 'better-sqlite3',
   connection: {
     filename: './db.sqlite',
   },
