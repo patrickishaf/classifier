@@ -1,7 +1,7 @@
 import agifyAPI from "./apis/agify-api";
 import genderizeAPI from "./apis/genderize-api";
 import nationalizeAPI from "./apis/nationalize-api";
-import { AgifyAPIRes, GenderizeAPIRes, NationalizeAPIRes, ServiceResponse, SuccessResponse } from "./dto";
+import { AgifyAPIRes, GenderizeAPIRes, GetAllProfilesOptions, NationalizeAPIRes, ServiceResponse, SuccessResponse } from "./dto";
 import { Model, ProfileRecord } from "./models";
 import { v7 as uuidv7 } from "uuid";
 import repository from "./repository";
@@ -104,6 +104,22 @@ const service = {
     return {
       statusCode: 200,
       data: successResponse,
+    }
+  },
+
+  async getAllProfiles(options: GetAllProfilesOptions): Promise<ServiceResponse<any>> {
+    try {
+      const profiles = await repository.findAllProfiles(options);
+      return {
+        statusCode: 200,
+        data: profiles,
+      }
+    } catch (err: any) {
+      console.log({ getAppProfilesError: err.message });
+      return {
+        statusCode: 500,
+        error: new Error('fai')
+      }
     }
   }
 };

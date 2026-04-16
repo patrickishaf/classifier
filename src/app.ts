@@ -9,5 +9,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post('/api/profiles', controller.classify);
+app.get('/api/profiles', controller.getAllProfiles);
 
 export default app;

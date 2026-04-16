@@ -1,3 +1,5 @@
+export type AgeGroup = 'child' | 'teenager' | 'adult' | 'senior';
+
 export type AgifyAPIRes = {
   count: number;
   name: string;
@@ -9,6 +11,12 @@ export type GenderizeAPIRes = {
   name: string;
   gender: string;
   probability: number;
+}
+
+export type GetAllProfilesOptions = {
+  gender?: string;
+  country_id?: string;
+  age_group?: string;
 }
 
 export type NationalizeAPIRes = {
