@@ -134,10 +134,33 @@ const service = {
 
     profile.created_at = (new Date(profile.created_at)).toISOString();
     delete profile.updated_at;
-    
+
     return {
       statusCode: 200,
       data: profile,
+    }
+  },
+
+  async deleteProfile(id: string): Promise<ServiceResponse<any>> {
+    const profile = await repository.findProfileByID(id);
+    if (profile === null) {
+      return {
+        statusCode: 404,
+        error: new Error("Profile not found"),
+      }
+    }
+
+    try {
+      await repository.deleteProfile(id)
+    } catch (err) {
+      return {
+        statusCode: 500,
+        error: new Error('something went wrong'),
+      }
+    }
+
+    return {
+      statusCode: 204
     }
   }
 };

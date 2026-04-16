@@ -6,11 +6,13 @@ const tableName = 'profiles';
 const db = getDB();
 
 const repository = {
-  handleSQLError(err: any) {
-    if (err.sqlMessage) {
-      return new Error(err.sqlMessage);
+  async deleteProfile(id: string) {
+    try {
+      const deletedID = await db(tableName).where({ id }).delete();
+      return deletedID;
+    } catch (err) {
+      throw this.handleSQLError(err);
     }
-    return err as Error;
   },
 
   async findAllProfiles(where: GetAllProfilesOptions) {
@@ -59,6 +61,13 @@ const repository = {
     } catch(err: any) {
       throw this.handleSQLError(err);
     }
+  },
+
+  handleSQLError(err: any) {
+    if (err.sqlMessage) {
+      return new Error(err.sqlMessage);
+    }
+    return err as Error;
   },
 };
 
