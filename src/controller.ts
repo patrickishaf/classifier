@@ -69,7 +69,6 @@ const controller = {
   },
 
   async deleteProfile(req: Request, res: Response) {
-    console.log('inside controller');
     const errorMsg = validateSchema(Joi.object({
       id: Joi.string().uuid().required(),
     }), req.params);
@@ -77,7 +76,6 @@ const controller = {
       return res.status(400).json(createErrorResponse('Invalid id'));
     }
 
-    console.log('about to call service');
     const response = await service.deleteProfile(req.params.id as string);
     if (response.error) {
       return res.status(response.statusCode).json(createErrorResponse(response.error.message));
