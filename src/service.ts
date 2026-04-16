@@ -47,6 +47,13 @@ const service = {
       ageData = await agifyAPI.classifyName(name);
       nationalityData = await nationalizeAPI.classifyName(name);
     } catch (err: any) {
+      const errorMessage = err.message as string;
+      if (errorMessage.startsWith('getaddrinfo ENOTFOUND')) {
+        return {
+          statusCode: 502,
+          error: new Error(errorMessage.split(' ')[2] + ' is temporarily unavailable'),
+        }
+      }
       return {
         statusCode: 502,
         error: new Error(err.message),
