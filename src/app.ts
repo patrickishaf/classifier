@@ -8,6 +8,6 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/api/profiles', controller.classify);
+app.post('/api/profiles', controller.classify);
 
 export default app;
