@@ -121,6 +121,24 @@ const service = {
         error: new Error('fai')
       }
     }
+  },
+
+  async getSingleProfile(id: string): Promise<ServiceResponse<Model<ProfileRecord>>> {
+    const profile = await repository.findProfileByID(id);
+    if (profile === null) {
+      return {
+        statusCode: 404,
+        error: new Error("Profile not found"),
+      }
+    }
+
+    profile.created_at = (new Date(profile.created_at)).toISOString();
+    delete profile.updated_at;
+    
+    return {
+      statusCode: 200,
+      data: profile,
+    }
   }
 };
 

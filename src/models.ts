@@ -1,8 +1,7 @@
 export type Model<T> = T & {
   id: string;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at?: Date;
+  created_at: string;
+  updated_at?: Date;
 }
 
 export type ProfileRecord = {

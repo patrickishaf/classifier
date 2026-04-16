@@ -52,7 +52,23 @@ const controller = {
     }
   },
 
-  async getSingleProfile(req: Request, res: Response) {}
+  async getSingleProfile(req: Request, res: Response) {
+    const errorMsg = validateSchema(Joi.object({
+      id: Joi.string().uuid().required(),
+    }), req.params);
+    if (errorMsg) {
+      return res.status(400).json(createErrorResponse('Invalid id'));
+    }
+
+    const response = await service.getSingleProfile(req.params.id as string);
+    if (response.error) {
+      return res.status(response.statusCode).json(createErrorResponse(response.error.message));
+    } else {
+      return res.status(response.statusCode).json(createSuccessResponse(response.data));
+    }
+  },
+
+  async deleteProfile(req: Request, res: Response) {},
 };
 
 export default controller;
