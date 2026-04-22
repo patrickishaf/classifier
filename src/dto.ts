@@ -6,6 +6,16 @@ export type AgifyAPIRes = {
   age: number;
 }
 
+export type Filter = {
+  gender?: string;
+  age_group?: string;
+  country_id?: string;
+  min_age?: number;
+  max_age?: number;
+  min_gender_probability?: number;
+  min_country_probability?: number;
+}
+
 export type GenderizeAPIRes = {
   count: number;
   name: string;
@@ -17,6 +27,14 @@ export type GetAllProfilesOptions = {
   gender?: string;
   country_id?: string;
   age_group?: string;
+  max_age?: number;
+  min_age?: number;
+  min_country_probability?: number;
+  min_gender_probability?: number;
+  sort_by?: 'age' | 'created_at' | 'gender_probability';
+  sort_order?: SortOrder;
+  page?: number;
+  limit?: number;
 }
 
 export type NationalizeAPIRes = {
@@ -31,6 +49,13 @@ export type ServiceResponse<T> = {
   error?: Error;
   data?: T;
 }
+
+export type Sort = {
+  column?: 'age' | 'created_at' | 'gender_probability';
+  order?: SortOrder;
+}
+
+export type SortOrder = 'asc' | 'desc' | 'ASC' | 'DESC';
 
 export type SuccessResponse = {
   id: string;

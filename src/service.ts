@@ -1,10 +1,11 @@
 import agifyAPI from "./apis/agify-api";
 import genderizeAPI from "./apis/genderize-api";
 import nationalizeAPI from "./apis/nationalize-api";
-import { AgifyAPIRes, GenderizeAPIRes, GetAllProfilesOptions, NationalizeAPIRes, ServiceResponse, SuccessResponse } from "./dto";
+import { AgifyAPIRes, Filter, GenderizeAPIRes, GetAllProfilesOptions, NationalizeAPIRes, ServiceResponse, Sort, SuccessResponse } from "./dto";
 import { Model, ProfileRecord } from "./models";
 import { v7 as uuidv7 } from "uuid";
 import repository from "./repository";
+import { IPaginateParams } from "knex-paginate";
 
 const service = {
   async profileName(name: string): Promise<ServiceResponse<any>> {
@@ -108,8 +109,27 @@ const service = {
   },
 
   async getAllProfiles(options: GetAllProfilesOptions): Promise<ServiceResponse<any>> {
+    const filters: Filter = {
+      age_group: options.age_group,
+      country_id: options.country_id,
+      gender: options.gender,
+      max_age: options.max_age,
+      min_age: options.min_age,
+      min_country_probability: options.min_country_probability,
+      min_gender_probability: options.min_gender_probability,
+    };
+
+    const sort: Sort = {
+      column: options.sort_by,
+      order: options.sort_order,
+    };
+
+    const pagination: IPaginateParams = {
+      currentPage: options.page ?? 1,
+      perPage: options.limit ?? 10,
+    }
     try {
-      const profiles = await repository.findAllProfiles(options);
+      const profiles = await repository.queryProfiles(filters, sort, pagination);
       return {
         statusCode: 200,
         data: profiles,

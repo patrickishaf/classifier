@@ -1,5 +1,10 @@
 import Joi from 'joi';
 
+export const createErrorResponse = (message: string) => ({
+  status: 'error',
+  message,
+});
+
 export const createSuccessResponse = (data: any, message?: string) => ({
   status: 'success',
   data,
@@ -10,12 +15,15 @@ export const createSuccessResponseList = (data: any, count: number) => ({
   status: 'success',
   count,
   data,
-})
-
-export const createErrorResponse = (message: string) => ({
-  status: 'error',
-  message,
 });
+
+export const createSuccessResponsePaginated = (data: any, pagination: any) => ({
+  status: 'success',
+  page: pagination.currentPage,
+  limit: pagination.perPage,
+  total: pagination.total,
+  data,
+})
 
 export const handleException = (err) => {
   console.log('unhandled exception:', err);
