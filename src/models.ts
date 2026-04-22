@@ -8,7 +8,6 @@ export type ProfileRecord = {
   name: string;
   gender: string;
   gender_probability: number;
-  sample_size: number;
   age: number;
   age_group: 'child' | 'teenager' | 'adult' | 'senior';
   country_id: string;
