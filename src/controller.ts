@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import Joi from 'joi';
-import { createErrorResponse, createSuccessResponse, createSuccessResponseList, validateSchema } from './util';
+import { createErrorResponse, createSuccessResponse, createSuccessResponseList, createSuccessResponsePaginated, validateSchema } from './util';
 import service from './service';
 import { AgeGroup, GetAllProfilesOptions, SortOrder } from './dto';
-import { Model, ProfileRecord } from './models';
 
 const controller = {
   async classify(req: Request, res: Response) {
@@ -65,7 +64,7 @@ const controller = {
     if (response.error) {
       return res.status(response.statusCode).json(createErrorResponse(response.error.message));
     } else {
-      return res.status(response.statusCode).json(createSuccessResponseList(response.data, response.data.length ));
+      return res.status(response.statusCode).json(createSuccessResponsePaginated(response.data.data, response.data.pagination ));
     }
   },
 

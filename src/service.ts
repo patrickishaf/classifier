@@ -1,7 +1,7 @@
 import agifyAPI from "./apis/agify-api";
 import genderizeAPI from "./apis/genderize-api";
 import nationalizeAPI from "./apis/nationalize-api";
-import { AgifyAPIRes, Filter, GenderizeAPIRes, GetAllProfilesOptions, NationalizeAPIRes, ServiceResponse, Sort, SuccessResponse } from "./dto";
+import { AgifyAPIRes, Filter, GenderizeAPIRes, GetAllProfilesOptions, NationalizeAPIRes, ServiceResponse, Sort, SortOrder, SuccessResponse } from "./dto";
 import { Model, ProfileRecord } from "./models";
 import { v7 as uuidv7 } from "uuid";
 import repository from "./repository";
@@ -121,13 +121,16 @@ const service = {
 
     const sort: Sort = {
       column: options.sort_by,
-      order: options.sort_order,
+      order: (options.sort_order ?? 'DESC').toLowerCase() as SortOrder,
     };
 
     const pagination: IPaginateParams = {
       currentPage: options.page ?? 1,
       perPage: options.limit ?? 10,
     }
+
+    console.log({ filters, sort, pagination })
+
     try {
       const profiles = await repository.queryProfiles(filters, sort, pagination);
       return {
@@ -138,7 +141,7 @@ const service = {
       console.log({ getAppProfilesError: err.message });
       return {
         statusCode: 500,
-        error: new Error('fai')
+        error: new Error('failed to get profiles')
       }
     }
   },

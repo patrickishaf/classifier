@@ -9,11 +9,11 @@ const dbConfig = {
   },
   migrations: {
     tableName: 'knex_migrations',
-    directory: './migrations',
+    directory: './src/db/migrations',
     extension: 'ts',
   },
   seeds: {
-    directory: './seeds',
+    directory: './src/db/seeds',
   }
 }
 

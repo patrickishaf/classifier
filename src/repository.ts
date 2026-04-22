@@ -55,8 +55,8 @@ const repository = {
     return profiles;
   },
 
-  async queryProfiles(filters: Filter = {}, sort: Sort = {}, pagination: IPaginateParams = { perPage: 10, currentPage: 1 }) {
-    const query = db.select('*').from(tableName).where((builder) => {
+  async queryProfiles(filters: Filter, sort: Sort, pagination: IPaginateParams) {
+    let query = db.select('*').from(tableName).where((builder) => {
       if (filters.age_group) builder.where({ age_group: filters.age_group });
       if (filters.gender) builder.where({ gender: filters.gender });
       if (filters.country_id) builder.where({ country_id: filters.country_id });
@@ -64,9 +64,9 @@ const repository = {
       if (filters.max_age) builder.where('age', '<=', filters.max_age);
       if (filters.min_country_probability) builder.where('country_probability', '>=', filters.min_country_probability);
       if (filters.min_gender_probability) builder.where('gender_probability', '>=', filters.min_gender_probability);
-
-      if (sort.column) builder.orderBy(sort.column, sort.order);
     });
+
+    if (sort.column) query = query.orderBy(sort.column, sort.order);
 
     let profiles;
     try {
