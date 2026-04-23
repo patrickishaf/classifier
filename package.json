@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "npx tsc",
-    "start": "node dist/src/index.js"
+    "start": "node dist/src/index.js",
+    "migrate": "npx knex migrate:latest",
+    "seed:run": "npx knex seed:run --specific=profiles.ts"
   },
   "keywords": [],
   "author": "",
