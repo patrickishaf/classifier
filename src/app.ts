@@ -10,6 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post('/api/profiles', controller.classify);
 app.get('/api/profiles', controller.getAllProfiles);
+app.get('/api/profiles/search', controller.searchProfiles);
 app.get('/api/profiles/:id', controller.getSingleProfile);
 app.delete('/api/profiles/:id', controller.deleteProfile);
 

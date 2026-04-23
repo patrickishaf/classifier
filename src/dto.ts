@@ -16,6 +16,21 @@ export type Filter = {
   min_country_probability?: number;
 }
 
+export type NaturalLanguageFilters = {
+  age_group?: AgeGroup;
+  age_groups?: AgeGroup[];
+  country_id?: string;
+  country_ids?: string[];
+  gender?: 'male' | 'female';
+  genders?: Array<'male' | 'female'>;
+  min_age?: number;
+  max_age?: number;
+
+  page?: number;
+  sort_by?: string;
+  sort_order?: SortOrder;
+}
+
 export type GenderizeAPIRes = {
   count: number;
   name: string;

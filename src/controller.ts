@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Joi from 'joi';
-import { createErrorResponse, createSuccessResponse, createSuccessResponseList, createSuccessResponsePaginated, validateSchema } from './util';
+import { createErrorResponse, createSuccessResponse, createSuccessResponsePaginated, validateSchema } from './util';
 import service from './service';
 import { AgeGroup, GetAllProfilesOptions, SortOrder } from './dto';
 
@@ -24,6 +24,22 @@ const controller = {
       res.status(response.statusCode).json(createErrorResponse(response.error.message));
     } else {
       res.status(response.statusCode).json(createSuccessResponse(response.data, response.message));
+    }
+  },
+
+  async deleteProfile(req: Request, res: Response) {
+    const errorMsg = validateSchema(Joi.object({
+      id: Joi.string().uuid().required(),
+    }), req.params);
+    if (errorMsg) {
+      return res.status(400).json(createErrorResponse('Invalid id'));
+    }
+
+    const response = await service.deleteProfile(req.params.id as string);
+    if (response.error) {
+      return res.status(response.statusCode).json(createErrorResponse(response.error.message));
+    } else {
+      return res.sendStatus(response.statusCode);
     }
   },
 
@@ -84,19 +100,19 @@ const controller = {
     }
   },
 
-  async deleteProfile(req: Request, res: Response) {
+  async searchProfiles(req: Request, res: Response) {
     const errorMsg = validateSchema(Joi.object({
-      id: Joi.string().uuid().required(),
-    }), req.params);
+      q: Joi.string().required(),
+    }), req.query);
     if (errorMsg) {
-      return res.status(400).json(createErrorResponse('Invalid id'));
+      return res.status(400).json(createErrorResponse('Missing or empty parameter'));
     }
 
-    const response = await service.deleteProfile(req.params.id as string);
+    const response = await service.searchProfiles(req.query.q as string);
     if (response.error) {
       return res.status(response.statusCode).json(createErrorResponse(response.error.message));
     } else {
-      return res.sendStatus(response.statusCode);
+      return res.status(response.statusCode).json(createSuccessResponsePaginated(response.data.data, response.data.pagination));
     }
   },
 };

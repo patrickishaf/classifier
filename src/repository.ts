@@ -1,6 +1,6 @@
 import { IPaginateParams, IWithPagination } from "knex-paginate";
 import getDB from "./db";
-import { Filter, GetAllProfilesOptions, Sort } from "./dto";
+import { Filter, GetAllProfilesOptions, NaturalLanguageFilters, Sort } from "./dto";
 import { Model, ProfileRecord } from "./models";
 
 const tableName = 'profiles';
@@ -67,6 +67,42 @@ const repository = {
     });
 
     if (sort.column) query = query.orderBy(sort.column, sort.order);
+
+    let profiles;
+    try {
+      profiles = await query.paginate(pagination);
+    } catch (err) {
+      throw this.handleSQLError(err);
+    }
+    if (!profiles) {
+      return null;
+    }
+    return profiles;
+  },
+
+  async queryProfilesWithNLP(filters: NaturalLanguageFilters) {
+    let query = db.select('*').from(tableName).where((builder) => {
+      if (filters.age_group) builder.where({ age_group: filters.age_group });
+      if (filters.genders) {
+        builder.whereIn('gender', filters.genders);
+      } else if (filters.gender) {
+        builder.where({ gender: filters.gender });
+      }
+      if (filters.country_ids) {
+        builder.whereIn('country_id', filters.country_ids);
+      } else if (filters.country_id) {
+        builder.where({ country_id: filters.country_id });
+      }
+      if (filters.min_age) builder.where('age', '>=', filters.min_age);
+      if (filters.max_age) builder.where('age', '<=', filters.max_age);
+    });
+
+    if (filters.sort_by) query = query.orderBy(filters.sort_by, filters.sort_order ?? 'asc');
+
+    const pagination: IPaginateParams = {
+      currentPage: filters.page ?? 1,
+      perPage: 10,
+    }
 
     let profiles;
     try {
