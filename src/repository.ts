@@ -101,7 +101,7 @@ const repository = {
 
     const pagination: IPaginateParams = {
       currentPage: filters.page ?? 1,
-      perPage: 10,
+      perPage: filters.page_size ?? 10,
     }
 
     let profiles;

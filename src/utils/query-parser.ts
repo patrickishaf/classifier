@@ -202,6 +202,12 @@ export const parseNaturalLanguageQuery = (q: string): NaturalLanguageFilters => 
       i++;
       continue;
     }
+
+    if (token === 'limit' && nextToken && !Number.isNaN(nextToken)) {
+      filters.page_size = parseInt(nextToken);
+      i++;
+      continue;
+    }
   }
 
   return filters;

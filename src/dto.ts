@@ -27,6 +27,7 @@ export type NaturalLanguageFilters = {
   max_age?: number;
 
   page?: number;
+  page_size?: number;
   sort_by?: string;
   sort_order?: SortOrder;
 }
